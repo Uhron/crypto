@@ -299,6 +299,9 @@ def subBytes(x, inv):
 				t = t ^ i
 			Ax.append(t)
 
+		Ax = ar.xorit(Ax, x)
+		Ax.reverse()
+
 	else:
 		v = x
 		x = d
@@ -307,7 +310,7 @@ def subBytes(x, inv):
 			tmp = []
 
 			for i in range(len(v)):
-				tmp.append(v[-i-1] and p[i])
+				tmp.append(v[i] and p[i])
 
 			t = 0
 			for i in tmp:
@@ -316,10 +319,12 @@ def subBytes(x, inv):
 			Ax.append(t)
 	
 		print(Ax)
+		Ax = ar.xorit(Ax, x)
 		Ax = ar.fill(ar.gcd(ar.p_irreductible, Ax))
-		print("inverse -->> " + str(Ax))
-	Ax = ar.xorit(Ax, x)
-	Ax.reverse()
+		Ax.reverse()
+		
+		print("inverse -->> " + str(Ax) + "\n")
+	#Ax.reverse()
 	return Ax
 
 
