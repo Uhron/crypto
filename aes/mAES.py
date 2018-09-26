@@ -574,17 +574,23 @@ def computeX(inv):
 
 		tmp.append(ar.fill(ar.gcd(ar.p_irreductible, x)))
 
-
+	print(tmp)
+	
 	X1 = subBytes(tmp, inv)
 
 	"""X1 = []
 
 	for w in tmp:	
 		X1.append(ar.xorit(w, b))"""
+	print(X1)
 
 	X2 = shiftRows(X1, inv)
 
+	print(X2)
+
 	X3 = mixColumns(X2, inv)
+
+	print(X3)
 
 	return X1, X2, X3
 
