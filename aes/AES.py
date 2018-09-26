@@ -310,7 +310,7 @@ def subBytes(x, inv):
 			tmp = []
 
 			for i in range(len(v)):
-				tmp.append(v[i] and p[i])
+				tmp.append(v[-i-1] and p[i])
 
 			t = 0
 			for i in tmp:
@@ -318,13 +318,9 @@ def subBytes(x, inv):
 
 			Ax.append(t)
 	
-		print(Ax)
 		Ax = ar.xorit(Ax, x)
-		Ax = ar.fill(ar.gcd(ar.p_irreductible, Ax))
 		Ax.reverse()
-		
-		print("inverse -->> " + str(Ax) + "\n")
-	#Ax.reverse()
+		Ax = ar.fill(ar.gcd(ar.p_irreductible, Ax))
 	return Ax
 
 
@@ -336,7 +332,7 @@ def sBox_gen(inv):
 
 	s_box = []
 
-	for x in range(2):
+	for x in range(256):
 		x = int_to_bitarray(x)
 		x = ar.fill(x)
 		x = subBytes(x, inv)
@@ -526,7 +522,7 @@ def dAES(input, s_box):
 
 	ek = key_gen(s_box)
 
-	state = addRoundKey(state, ek[0])
+	state = addRoundKey(state, ek[10])
 
 	for i in range(1,10):
 		s = []
@@ -536,9 +532,9 @@ def dAES(input, s_box):
 		for b in state:
 			s.append(subBytes(b, True))
 
-		s = mixColumns(s, True)
+		s = addRoundKey(s, ek[-i-1])
 
-		state = addRoundKey(s, ek[i])
+		state = mixColumns(s, True)
 
 	s = []
 
@@ -547,7 +543,7 @@ def dAES(input, s_box):
 	for row in state:
 		s.append(subBytes(row, True))
 
-	s = addRoundKey(s, ek[10])
+	s = addRoundKey(s, ek[0])
 
 	state = [	s[0], s[4], s[8], s[12],
 				s[1], s[5], s[9], s[13],
@@ -568,24 +564,15 @@ def main():
 				ar.fill(int_to_bitarray(int("4E",16))), ar.fill(int_to_bitarray(int("69",16))), ar.fill(int_to_bitarray(int("6E",16))), ar.fill(int_to_bitarray(int("65",16))),
 				ar.fill(int_to_bitarray(int("20",16))), ar.fill(int_to_bitarray(int("54",16))), ar.fill(int_to_bitarray(int("77",16))), ar.fill(int_to_bitarray(int("6F",16)))]
 	
-	"""s_box = sBox_gen(False)
+	s_box = sBox_gen(False)
 
 	ciphredText = AES(input, s_box)
 
-	print(ciphredText)"""
+	#print(ciphredText)
 
-	s_box = sBox_gen(True)
+	clearText = dAES(ciphredText, s_box)
 
-	print(s_box)
-
-	for b in s_box:
-		print("sb -->> " + str(hex(int(concatenate_list_data(b),2))[2:]) + ";")
-
-	print("\n\n")
-
-	"""clearText = dAES(ciphredText, s_box)
-
-	print(ciphredText)"""
+	#print(ciphredText)
 
 
 if __name__ == "__main__":
