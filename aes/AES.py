@@ -275,53 +275,63 @@ MC_inv = [	[[1,1,1,0],[1,0,1,1],[1,1,0,1],[1,0,0,1]],
 
 ##############		MIX COLUMNS		##############
 
-def subBytes(x, inv):
+def subBytes(a, inv):
 	""" subBytes function -->> x * v = 1 mod( ar.p_irreductible ) 
 	-->> y = A * v + b
 
 	return y
 	"""
-
-	Ax = []
-
 	if not inv :
-		v = ar.fit(ar.gcd(ar.p_irreductible, x))
-		x = b
 
-		for p in A:
-			tmp = []
+		state = []
+		for w in a:
+			v = w
+			v = ar.fill(ar.gcd(ar.p_irreductible, v))
+			Ax = []
 
-			for i in range(len(v)):
-				tmp.append(v[-i-1] and p[i])
+			for p in A:
+				tmp = []
 
-			t = 0
-			for i in tmp:
-				t = t ^ i
-			Ax.append(t)
+				for i in range(len(v)):
+					tmp.append(v[-i-1] and p[i])
 
-		Ax = ar.xorit(Ax, x)
-		Ax.reverse()
+				t = 0
+				for i in tmp:
+					t = t ^ i
+				Ax.append(t)
+
+			Ax = ar.xorit(Ax, b)
+			Ax.reverse()
+
+			state.append(Ax)
 
 	else:
-		v = x
-		x = d
+
+		state = []
+
+		for w in a:
+			v = w
+			
+			Ax = []
+			for p in C:
+				tmp = []
+
+				for i in range(len(v)):
+					tmp.append(v[-i-1] and p[i])
+
+				t = 0
+				for i in tmp:
+					t = t ^ i
+
+				Ax.append(t)
 		
-		for p in C:
-			tmp = []
+			Ax = ar.xorit(Ax, d)
+			Ax.reverse()
+			Ax = ar.fill(ar.gcd(ar.p_irreductible, Ax))
 
-			for i in range(len(v)):
-				tmp.append(v[-i-1] and p[i])
+			state.append(Ax)
 
-			t = 0
-			for i in tmp:
-				t = t ^ i
-
-			Ax.append(t)
-	
-		Ax = ar.xorit(Ax, x)
-		Ax.reverse()
-		Ax = ar.fill(ar.gcd(ar.p_irreductible, Ax))
-	return Ax
+	return state
 
 
 def sBox_gen(inv):
@@ -335,10 +345,9 @@ def sBox_gen(inv):
 	for x in range(256):
 		x = int_to_bitarray(x)
 		x = ar.fill(x)
-		x = subBytes(x, inv)
 		s_box.append(x)
 
-	return s_box
+	return subBytes(s_box, inv)
 
 
 def shiftRows(a, inv):
@@ -475,11 +484,14 @@ def AES(input, s_box):
 
 	state = addRoundKey(state, ek[0])
 
-	for i in range(1,10):
-		s = []
+	for b in state:
+		print("st -->> " + str(0) + " : " + str(hex(int(concatenate_list_data(b),2))[2:]) + ";")
 
-		for b in state:
-			s.append(subBytes(b, False))
+	print("\n\n")
+
+	for i in range(1,10):
+
+		s = subBytes(state, False)
 
 		s = shiftRows(s, False)
 
@@ -487,10 +499,12 @@ def AES(input, s_box):
 
 		state = addRoundKey(s, ek[i])
 
-	s = []
+		for b in state:
+			print("st -->> " + str(i) + " : " + str(hex(int(concatenate_list_data(b),2))[2:]) + ";")
 
-	for row in state:
-		s.append(subBytes(row, False))
+		print("\n\n")
+
+	s = subBytes(state, False)
 
 	s = shiftRows(s, False)
 
@@ -529,8 +543,7 @@ def dAES(input, s_box):
 
 		state = shiftRows(state, True)
 
-		for b in state:
-			s.append(subBytes(b, True))
+		s = subBytes(state, True)
 
 		s = addRoundKey(s, ek[-i-1])
 
@@ -540,8 +553,7 @@ def dAES(input, s_box):
 
 	state = shiftRows(state, True)
 
-	for row in state:
-		s.append(subBytes(row, True))
+	s = subBytes(state, True)
 
 	s = addRoundKey(s, ek[0])
 
