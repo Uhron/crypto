@@ -425,6 +425,7 @@ def sBox_gen(inv):
 	for x in range(256):
 		x = int_to_bitarray(x)
 		x = ar.fill(x)
+		x = ar.fill(ar.gcd(ar.p_irreductible, x))
 		s_box.append(x)
 
 	return subBytes(s_box, inv)
@@ -573,24 +574,21 @@ def computeX(inv):
 	for x in X:
 
 		tmp.append(ar.fill(ar.gcd(ar.p_irreductible, x)))
-
-	print(tmp)
 	
-	X1 = subBytes(tmp, inv)
+	tmp = subBytes(tmp, inv)
 
-	"""X1 = []
+	X1 = []
+
+	x = b
+
+	x.reverse()
 
 	for w in tmp:	
-		X1.append(ar.xorit(w, b))"""
-	print(X1)
+		X1.append(ar.xorit(w, x))
 
 	X2 = shiftRows(X1, inv)
 
-	print(X2)
-
 	X3 = mixColumns(X2, inv)
-
-	print(X3)
 
 	return X1, X2, X3
 
@@ -614,14 +612,12 @@ def AES(input, s_box):
 
 	for i in range(len(X)):
 		ar.fill(X[i])
-
-	for i in range(len(state)):
-		s.append(ar.xorit(state[i],X[i]))
+		s.append(ar.xorit(state[i], X[i]))
 
 	state = addRoundKey(s, ek[0])
 
 	for b in state:
-		print("st -->> " + str(0) + " : " + str(hex(int(concatenate_list_data(b),2))[2:]) + ";")
+		print("st -->> " + str(0) + " : " + str(hex(int(concatenate_list_data(b), 2))[2:]) + ";")
 
 	print("\n\n")
 
@@ -629,17 +625,23 @@ def AES(input, s_box):
 
 		s = maskSubBytes(state, False)
 
+		for n in range(len(s)):
+			b = ar.xorit(s[n], X1[n])
+			print("st -->> " + str(i) + " : " + str(hex(int(concatenate_list_data(b), 2))[2:]) + ";")
+
+		print("\n\n")
+
 		s = shiftRows(s, False)
 
 		s = mixColumns(s, False)
 
 		state = maskAddRoundKey(s, ek[i], X3)
 
-		for n in range(len(s)):
-			b = ar.xorit(s[n],X[n])
-			print("st -->> " + str(i) + " : " + str(hex(int(concatenate_list_data(b),2))[2:]) + ";")
+		"""for n in range(len(s)):
+			b = ar.xorit(s[n], X[n])
+			print("st -->> " + str(i) + " : " + str(hex(int(concatenate_list_data(b), 2))[2:]) + ";")
 
-		print("\n\n")
+		print("\n\n")"""
 
 
 	s = subBytes(state, False)
@@ -651,7 +653,7 @@ def AES(input, s_box):
 	s = []
 
 	for i in range(len(state)):
-		s.append(ar.xorit(state[i],X[i]))
+		s.append(ar.xorit(state[i], X[i]))
 
 	state = [	s[0], s[4], s[8], s[12],
 				s[1], s[5], s[9], s[13],

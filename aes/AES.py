@@ -281,6 +281,7 @@ def subBytes(a, inv):
 
 	return y
 	"""
+	
 	if not inv :
 
 		state = []
@@ -493,16 +494,17 @@ def AES(input, s_box):
 
 		s = subBytes(state, False)
 
+		for b in s:
+			print("st -->> " + str(i) + " : " + str(hex(int(concatenate_list_data(b),2))[2:]) + ";")
+
+		print("\n\n")
+
 		s = shiftRows(s, False)
 
 		s = mixColumns(s, False)
 
 		state = addRoundKey(s, ek[i])
 
-		for b in state:
-			print("st -->> " + str(i) + " : " + str(hex(int(concatenate_list_data(b),2))[2:]) + ";")
-
-		print("\n\n")
 
 	s = subBytes(state, False)
 

@@ -206,19 +206,20 @@ def main():
 
 	print("irreductible polynomial:" + str(ar.p_irreductible) + "\n")
 	print("substitution polynomial:" + str(ar.substitution) + "\n")
-	
-	tmp = [1, 0, 0, 0, 0, 0, 0, 0]
+	"""	
+	tmp = [0, 0, 1, 1, 1, 1, 0, 0]
 
 	print("reduct: " + str(tmp) + ";\n\n\t\t result: " + str(ar.reduct(tmp)) + ";\n")
 
-	tmp = [1, 0, 0, 0, 0, 0, 0, 0, 0]
+	tmp = [0, 1, 1, 0, 1, 1, 1, 0]
+
 
 	print("reduct: " + str(tmp) + ";\n\n\t\t result: " + str(ar.reduct(tmp)) + ";\n")
 
-	tmp = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+	tmp = [0, 1, 0, 0, 0, 1, 1, 1]
 
 	print("reduct: " + str(tmp) + ";\n\n\t\t result: " + str(ar.reduct(tmp)) + ";\n")
-"""
+
 	a = [1, 0, 0, 0, 0, 0, 0, 0]
 
 	b = [0]
@@ -230,9 +231,9 @@ def main():
 	a = [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1]
 
 	print("div: \t A: " + str(a) + ";\n\n\t\t result: " + str(ar.div(a)) + ";\n")
-	
-	a = [1, 0, 0, 0, 1, 1, 0, 1, 1]
-	b = [1, 0, 1 ,1]
+	"""
+	b = [0, 0, 1, 1, 1, 1, 0, 0]
+	a = ar.p_irreductible
 
 	pi, qi, gdc = ar.gcd(a, b)
 
@@ -240,7 +241,7 @@ def main():
 	print("inverse of: " + str(b) + " is -->> " + str(qi) + ";\n")
 	
 	a = ar.p_irreductible
-	b = [0, 0, 0, 0, 0, 0, 0, 1, 0]
+	b = [0, 1, 1, 0, 1, 1, 1, 0]
 
 	pi, qi, gdc = ar.gcd(a, b)
 
@@ -248,7 +249,7 @@ def main():
 	print("inverse of: " + str(b) + " is -->> " + str(qi) + ";\n")
 
 	a = ar.p_irreductible
-	b = [0, 0, 0, 0, 0, 0, 0, 1, 1]
+	b = [0, 1, 0, 0, 0, 1, 1, 1]
 
 	pi, qi, gdc = ar.gcd(a, b)
 
@@ -270,7 +271,7 @@ def main():
 
 	print("gcd: \t A: " + str(a) + ";\t B: " + str(b) + ";\n\n\t\t result: " + str((pi, qi, gdc)) + ";\n")
 	print("inverse of: " + str(b) + " is -->> " + str(qi) + ";\n")
-"""
+
 
 
 if __name__ == "__main__":
