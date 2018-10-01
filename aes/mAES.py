@@ -225,15 +225,15 @@ K = [	ar.fill(int_to_bitarray(int("54",16))), ar.fill(int_to_bitarray(int("68",1
 
 ##############		MASK	##############
 
-X = [ 	[1,1,1,1,1,1,1,1], [0,0,0,0,0,0,1,0], [0,0,0,0,1,0,0,0], [0,1,0,0,0,0,0,0],
-		[0,0,1,0,0,0,0,0], [0,0,0,0,1,0,0,0], [0,0,1,0,0,0,0,0], [1,1,1,1,1,1,1,1],
+X = ( 	[1,1,1,1,1,1,1,1], [0,0,0,0,0,0,1,0], [0,0,0,0,1,0,0,0], [0,1,0,0,0,0,0,0],
+		[0,0,1,0,0,0,0,0], [0,1,0,0,1,0,0,0], [0,0,1,0,0,0,0,0], [1,1,1,1,1,1,1,1],
 		[1,1,1,1,1,1,1,1], [0,0,0,0,1,0,1,0], [1,0,0,0,0,0,0,0], [0,0,1,0,0,0,0,0],
-		[0,0,0,0,0,0,1,0], [0,0,0,1,0,0,0,0], [1,1,1,1,1,1,1,1], [0,0,1,0,1,0,0,0]]
+		[0,0,0,0,0,0,1,0], [0,0,0,1,0,0,0,0], [1,1,1,1,1,1,1,1], [0,0,1,0,1,0,0,0])
 
-"""X = [ 	[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0],
+"""X = () 	[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0],
-		[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0]]"""
+		[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0])"""
 
 ##############		MASK	##############
 
@@ -299,81 +299,56 @@ def genY(): #CHECKED
 	return Y
 
 
-def subBytes(a, inv): 
+def subBytes(a, inv): #CHECKED
 	""" subBytes function with mask-->> a * v = 1 mod( ar.p_irreductible ) 
 	-->> y = A * v + b
 
 	return y
 	"""
 
-	if not inv :
-
-		state = []
-		for w in a:
-			v = w
-
-			Ax = []
-
-			for p in A:
-				tmp = []
-
-				for i in range(len(v)):
-					tmp.append(v[-i-1] and p[i])
-
-				t = 0
-				for i in tmp:
-					t = t ^ i
-				Ax.append(t)
-
-			#print("v -->> " + str(v))
-			#print("Ax -->> " + str(Ax))
-			Ax = ar.xorit(Ax, b)
-			print("post -->> "  + str(Ax) + "\n")
-			Ax = list(reversed(Ax))
-			print("reversed -->> "  + str(Ax) + "\n")
-
-			state.append(Ax)
-
+	if inv:
+		M = C
+		m = d
 	else:
-		state = []
+		M = A
+		m = b
 
-		for w in a:
-			v = w
-			
-			Ax = []
-			for p in C:
-				tmp = []
+	state = []
+	for w in a:
+		v = w
 
-				for i in range(len(v)):
-					tmp.append(v[-i-1] and p[i])
+		Ax = []
 
-				t = 0
-				for i in tmp:
-					t = t ^ i
+		for p in M:
+			tmp = []
 
-				Ax.append(t)
-		
-			Ax = ar.xorit(Ax, d)
-			Ax.reverse()
-			Ax = ar.fill(ar.gcd(ar.p_irreductible, Ax))
+			for i in range(len(v)):
+				tmp.append(v[-i-1] and p[i])
 
-			state.append(Ax)
+			t = 0
+			for i in tmp:
+				t = t ^ i
+			Ax.append(t)
+		Ax = ar.xorit(Ax, m)
+		Ax = list(reversed(Ax))
+
+		state.append(Ax)
 
 	return state
 
 
-def maskSubBytes(aX, inv): 
+def maskSubBytes(aX, inv, W = list(X)): #CHECKED
 	"""Modified inversion in GF(2^8) with masking countermeasure
 	return xor(B,X1)
 	"""
 
-	for i in range(len(X)):
-		ar.fill(X[i])
+	for i in range(len(W)):
+		ar.fill(W[i])
 
 	Y = genY()
 
 	if inv:
-		aX = subBytes(aX, inv)
+		aX = subBytes(aX, True)
 
 	res = []
 
@@ -381,7 +356,7 @@ def maskSubBytes(aX, inv):
 
 		Ax = ar.reduct(ar.mult(Y[w], aX[w]))
 
-		yx = ar.reduct(ar.mult(Y[w], X[w]))
+		yx = ar.reduct(ar.mult(Y[w], W[w]))
 
 		Ay = ar.xorit(yx, Ax)
 
@@ -389,16 +364,18 @@ def maskSubBytes(aX, inv):
 
 		y_inv = ar.fill(ar.gcd(ar.p_irreductible, Y[w]))
 
-		yx = ar.reduct(ar.mult(y_inv, X[w]))
+		yx = ar.reduct(ar.mult(y_inv, W[w]))
 
 		Ay = ar.xorit(yx, Ay)
 
 		Ax = ar.reduct(ar.mult(Y[w], Ay))
 
+		Ax = ar.fill(ar.fit(Ax))
+
 		res.append(Ax)
 
-	else:
-		res = subBytes(res, inv)
+	if not inv:
+		res = subBytes(res, False)
 
 	return res
 
@@ -416,14 +393,14 @@ def sBox_gen(inv): #CHECKED
 		x = ar.fill(ar.gcd(ar.p_irreductible, x))
 		s_box.append(x)
 
-	return subBytes(s_box, inv)
+	return subBytes(s_box, False)
 
 
-def shiftRows(a, inv): #CHECKED
+def shiftRows(input, inv): #CHECKED
 	""" shift each row of a Nr times
 	return a shifted
 	"""
-
+	a = list(input)
 	if not inv:
 
 		for x in range(0, len(a), 4):
@@ -548,23 +525,46 @@ def addRoundKey(state, key): #CHECKED
 	return state
 
 
-def computeX(inv): #CHECKED
+def computeX(inv): # CHECKED
 	"""compute X1, X2 and X3 with X
 	returns X1, X2, X3
 	"""
-	
-	tmp = subBytes(X, inv)
 
-	X1 = []
+	t = list(X)
 
-	x = list(reversed(b))
+	for i in range(len(t)):
+		ar.fill(t[i])
 
-	for w in tmp:	
-		X1.append(ar.xorit(w, x))
+	if not inv:
+		tmp = subBytes(t, inv)
 
-	X2 = shiftRows(X1, inv)
+		X1 = []
 
-	X3 = mixColumns(X2, inv)
+		x = list(reversed(b))
+
+		for w in tmp:	
+			X1.append(ar.xorit(w, x))
+
+		X2 = shiftRows(X1, inv)
+
+		X3 = mixColumns(X2, inv)
+
+	if inv:
+
+		X1 = t
+
+		X1 = shiftRows(X1, inv)
+
+		tmp = subBytes(X1, inv)
+
+		X2 = []
+
+		x = list(reversed(d))
+
+		for w in tmp:	
+			X2.append(ar.xorit(w, x))
+
+		X3 = mixColumns(X2, inv)
 
 	return X1, X2, X3
 
@@ -596,7 +596,6 @@ def AES(input, s_box): #CHECKED
 	for i in range(1,10):
 
 		s = maskSubBytes(state, False)
-		print("\n\n")
 
 		s = shiftRows(s, False)
 
@@ -640,9 +639,15 @@ def dAES(input, s_box):
 
 	ek = key_gen(s_box)
 
+	s = []
+
+	for i in range(len(X)):
+		ar.fill(X[i])
+		s.append(ar.xorit(state[i], X[i]))
+
 	X1, X2, X3 = computeX(True)
 
-	state = addRoundKey(state, ek[10])
+	state = addRoundKey(s, ek[10])
 
 	for i in range(1,10):
 
@@ -650,19 +655,36 @@ def dAES(input, s_box):
 
 		s = shiftRows(state, True)
 
-		s = maskSubBytes(s, True)
+		s = maskSubBytes(s, True, X2)
 
-		s = maskAddRoundKey(s, ek[-i-1], X3)
+		s = addRoundKey(s, ek[-i-1])
 
-		state = mixColumns(s, True)
+		s = mixColumns(s, True)
+
+		state = []
+		for i in range(len(X3)):
+			n = ar.xorit(s[i], X3[i])
+			state.append(ar.xorit(n, X[i]))
 
 	s = []
 
 	s = shiftRows(state, True)
 
-	s = maskSubBytes(s, True)
+	s = maskSubBytes(s, True, X2)
 
-	s = maskAddRoundKey(s, ek[0], X2)
+	s = addRoundKey(s, ek[0])
+
+	state = []
+
+	for i in range(len(X2)):
+		n = ar.xorit(s[i], X2[i])
+		state.append(ar.xorit(n, X[i]))
+
+	s = []
+
+	for i in range(len(X)):
+		ar.fill(X[i])
+		s.append(ar.xorit(state[i], X[i]))
 
 	state = [	s[0], s[4], s[8], s[12],
 				s[1], s[5], s[9], s[13],
@@ -689,9 +711,9 @@ def main():
 
 	print(ciphredText)
 
-	#clearText = dAES(ciphredText, s_box)
+	clearText = dAES(ciphredText, s_box)
 
-	#print(ciphredText)
+	print(ciphredText)
 
 
 if __name__ == "__main__":
