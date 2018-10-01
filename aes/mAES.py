@@ -1,4 +1,3 @@
-
 from random import randint
 
 #############	 UTILE FUCTION 		#############
@@ -9,7 +8,6 @@ def int_to_bitarray(n):
 
 def concatenate_list_data(list):
 	""" concatenate list data, concatenate all data in a list into one string
-
 	Returns string of concatenated data
 	"""
 	result = ''
@@ -27,14 +25,12 @@ def concatenate_list_data(list):
 
 class Aritmetic:
 	""" modular aritmetic Z2/Z
-
 	construct with a polinomyal by parameter or take x⁸ + x⁴ + x³ + x + 1 by default
 	functions: xorit, reduct, mult, div, gcd.
 	"""
 
 	def __init__(self, p_irreductible = [1,0,0,0,1,1,0,1,1]):
 		""" init function, init irreductible polynomial to x⁸ + x⁴ + x³ + x + 1
-
 		no returns
 		"""
 
@@ -44,7 +40,6 @@ class Aritmetic:
 
 	def fill(self, p, fill = None):
 		""" fill with 0 polinomyal with len less than nine
-
 		returns p filled with len equal than irreductible polynomial
 		"""
 
@@ -60,7 +55,6 @@ class Aritmetic:
 
 	def fit(self, p):
 		""" fit polynomial array to first 1
-
 		returns p fit to first significant bit
 		"""
 
@@ -76,9 +70,7 @@ class Aritmetic:
 
 	def xorit(self, a, b):
 		""" xor two arrays of bits
-
 		a and b must have the same length
-
 		returns result of xor a and b
 		"""
 
@@ -92,7 +84,6 @@ class Aritmetic:
 
 	def reduct(self, p):
 		""" reduces the polynomial p
-
 		returns p reducted
 		"""
 
@@ -122,7 +113,6 @@ class Aritmetic:
 
 	def mult(self, p1, p2):
 		""" multiply the polynomials -->> p1 * p2 = c
-
 		returns c, result of multiplication
 		"""
 
@@ -141,7 +131,6 @@ class Aritmetic:
 
 	def div(self, a, b = None):
 		""" divide the polynomials -->> a = bq + r
-
 		returns a, b, q, r; reult of division
 		"""
 
@@ -178,11 +167,8 @@ class Aritmetic:
 
 	def gcd(self, a, b):
 		""" greater common divisor between a and b
-
 		Extended euclidean algorithm and Bezout identity -->> ax + by = gcd(a,b)
-
 		if b has inverse: return Pi, Qi, gcd(a, b)
-
 		else: return 0, 0, gcd(a, b)
 		"""
 
@@ -239,15 +225,15 @@ K = [	ar.fill(int_to_bitarray(int("54",16))), ar.fill(int_to_bitarray(int("68",1
 
 ##############		MASK	##############
 
-"""X = [ 	[1,1,1,1,1,1,1,1], [0,0,0,0,0,0,1,0], [0,0,0,0,1,0,0,0], [0,1,0,0,0,0,0,0],
+X = [ 	[1,1,1,1,1,1,1,1], [0,0,0,0,0,0,1,0], [0,0,0,0,1,0,0,0], [0,1,0,0,0,0,0,0],
 		[0,0,1,0,0,0,0,0], [0,0,0,0,1,0,0,0], [0,0,1,0,0,0,0,0], [1,1,1,1,1,1,1,1],
 		[1,1,1,1,1,1,1,1], [0,0,0,0,1,0,1,0], [1,0,0,0,0,0,0,0], [0,0,1,0,0,0,0,0],
-		[0,0,0,0,0,0,1,0], [0,0,0,1,0,0,0,0], [1,1,1,1,1,1,1,1], [0,0,1,0,1,0,0,0]]"""
+		[0,0,0,0,0,0,1,0], [0,0,0,1,0,0,0,0], [1,1,1,1,1,1,1,1], [0,0,1,0,1,0,0,0]]
 
-X = [ 	[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0],
+"""X = [ 	[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0],
 		[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0],
-		[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0]]
+		[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0]]"""
 
 ##############		MASK	##############
 
@@ -292,9 +278,8 @@ MC_inv = [	[[1,1,1,0],[1,0,1,1],[1,1,0,1],[1,0,0,1]],
 
 ##############		MIX COLUMNS		##############
 
-def genY():
+def genY(): #CHECKED
 	"""generate Y random not zero
-
 	return Y generated
 	"""
 
@@ -314,7 +299,7 @@ def genY():
 	return Y
 
 
-def subBytes(a, inv):
+def subBytes(a, inv): 
 	""" subBytes function with mask-->> a * v = 1 mod( ar.p_irreductible ) 
 	-->> y = A * v + b
 
@@ -340,13 +325,16 @@ def subBytes(a, inv):
 					t = t ^ i
 				Ax.append(t)
 
+			#print("v -->> " + str(v))
+			#print("Ax -->> " + str(Ax))
 			Ax = ar.xorit(Ax, b)
-			Ax.reverse()
+			print("post -->> "  + str(Ax) + "\n")
+			Ax = list(reversed(Ax))
+			print("reversed -->> "  + str(Ax) + "\n")
 
 			state.append(Ax)
 
 	else:
-
 		state = []
 
 		for w in a:
@@ -374,9 +362,8 @@ def subBytes(a, inv):
 	return state
 
 
-def maskSubBytes(aX, inv):
+def maskSubBytes(aX, inv): 
 	"""Modified inversion in GF(2^8) with masking countermeasure
-
 	return xor(B,X1)
 	"""
 
@@ -385,38 +372,39 @@ def maskSubBytes(aX, inv):
 
 	Y = genY()
 
-	if not inv:
-		res = []
+	if inv:
+		aX = subBytes(aX, inv)
 
-		for w in range(len(aX)):
+	res = []
 
-			Ax = ar.reduct(ar.mult(Y[w], aX[w]))
+	for w in range(len(aX)):
 
-			yx = ar.reduct(ar.mult(Y[w], X[w]))
+		Ax = ar.reduct(ar.mult(Y[w], aX[w]))
 
-			Ay = ar.xorit(yx, Ax)
+		yx = ar.reduct(ar.mult(Y[w], X[w]))
 
-			Ay = ar.fill(ar.gcd(ar.p_irreductible, Ay))
+		Ay = ar.xorit(yx, Ax)
 
-			y_inv = ar.fill(ar.gcd(ar.p_irreductible, Y[w]))
+		Ay = ar.fill(ar.gcd(ar.p_irreductible, Ay))
 
-			yx = ar.reduct(ar.mult(y_inv, X[w]))
+		y_inv = ar.fill(ar.gcd(ar.p_irreductible, Y[w]))
 
-			Ay = ar.xorit(yx, Ay)
+		yx = ar.reduct(ar.mult(y_inv, X[w]))
 
-			Ax = ar.reduct(ar.mult(Y[w], Ay))
+		Ay = ar.xorit(yx, Ay)
 
-			res.append(Ax)
+		Ax = ar.reduct(ar.mult(Y[w], Ay))
+
+		res.append(Ax)
 
 	else:
-		pass
+		res = subBytes(res, inv)
 
-	return subBytes(res, inv)
+	return res
 
 
-def sBox_gen(inv):
+def sBox_gen(inv): #CHECKED
 	""" generate sBox of AES with subByte function trying all combinations
-
 	returns sBoxes
 	"""
 
@@ -431,9 +419,8 @@ def sBox_gen(inv):
 	return subBytes(s_box, inv)
 
 
-def shiftRows(a, inv):
+def shiftRows(a, inv): #CHECKED
 	""" shift each row of a Nr times
-
 	return a shifted
 	"""
 
@@ -449,9 +436,8 @@ def shiftRows(a, inv):
 	return a
 
 
-def mixColumns(a, inv):
+def mixColumns(a, inv): #CHECKED
 	""" linear function to diffus input
-
 	return a mixed
 	"""
 
@@ -477,9 +463,8 @@ def mixColumns(a, inv):
 	return B
 
 
-def KSC(B, i, s_box):
+def KSC(B, i, s_box): #CHECKED
 	""" Key schedule core to generate round key
-
 	returns key rounded
 	"""
 	t = B
@@ -502,9 +487,8 @@ def KSC(B, i, s_box):
 	return r + res
 
 
-def key_gen(s_box):
+def key_gen(s_box): #CHECKED
 	""" key generation 
-
 	returns expanedd key
 	"""
 
@@ -542,7 +526,7 @@ def key_gen(s_box):
 	return tmp
 
 
-def maskAddRoundKey(state, key, Xx):
+def maskAddRoundKey(state, key, Xx): #CHECKED
 
 
 	for i in range(len(X)):
@@ -556,7 +540,7 @@ def maskAddRoundKey(state, key, Xx):
 	return state
 
 
-def addRoundKey(state, key):
+def addRoundKey(state, key): #CHECKED
 
 	for x in range(len(state)):
 		state[x] = ar.xorit(state[x], key[x%4][x//4])
@@ -564,24 +548,16 @@ def addRoundKey(state, key):
 	return state
 
 
-def computeX(inv):
+def computeX(inv): #CHECKED
 	"""compute X1, X2 and X3 with X
-
 	returns X1, X2, X3
 	"""
-
-	tmp = []
-	for x in X:
-
-		tmp.append(ar.fill(ar.gcd(ar.p_irreductible, x)))
 	
-	tmp = subBytes(tmp, inv)
+	tmp = subBytes(X, inv)
 
 	X1 = []
 
-	x = b
-
-	x.reverse()
+	x = list(reversed(b))
 
 	for w in tmp:	
 		X1.append(ar.xorit(w, x))
@@ -593,9 +569,8 @@ def computeX(inv):
 	return X1, X2, X3
 
 		
-def AES(input, s_box):
+def AES(input, s_box): #CHECKED
 	""" AES function, AES implementation
-
 	returns AES ciphered output
 	"""
 
@@ -616,19 +591,11 @@ def AES(input, s_box):
 
 	state = addRoundKey(s, ek[0])
 
-	for b in state:
-		print("st -->> " + str(0) + " : " + str(hex(int(concatenate_list_data(b), 2))[2:]) + ";")
-
-	print("\n\n")
+	s = []
 
 	for i in range(1,10):
 
 		s = maskSubBytes(state, False)
-
-		for n in range(len(s)):
-			b = ar.xorit(s[n], X1[n])
-			print("st -->> " + str(i) + " : " + str(hex(int(concatenate_list_data(b), 2))[2:]) + ";")
-
 		print("\n\n")
 
 		s = shiftRows(s, False)
@@ -637,14 +604,7 @@ def AES(input, s_box):
 
 		state = maskAddRoundKey(s, ek[i], X3)
 
-		"""for n in range(len(s)):
-			b = ar.xorit(s[n], X[n])
-			print("st -->> " + str(i) + " : " + str(hex(int(concatenate_list_data(b), 2))[2:]) + ";")
-
-		print("\n\n")"""
-
-
-	s = subBytes(state, False)
+	s = maskSubBytes(state, False)
  
 	s = shiftRows(s, False)
 
@@ -670,7 +630,6 @@ def AES(input, s_box):
 
 def dAES(input, s_box):
 	""" AES function, AES implementation
-
 	returns AES clear output
 	"""
 
@@ -681,16 +640,19 @@ def dAES(input, s_box):
 
 	ek = key_gen(s_box)
 
+	X1, X2, X3 = computeX(True)
+
 	state = addRoundKey(state, ek[10])
 
 	for i in range(1,10):
+
 		s = []
 
 		s = shiftRows(state, True)
 
-		s = subBytes(s, True)
+		s = maskSubBytes(s, True)
 
-		s = addRoundKey(s, ek[-i-1])
+		s = maskAddRoundKey(s, ek[-i-1], X3)
 
 		state = mixColumns(s, True)
 
@@ -698,9 +660,9 @@ def dAES(input, s_box):
 
 	s = shiftRows(state, True)
 
-	s = subBytes(s, True)
+	s = maskSubBytes(s, True)
 
-	s = addRoundKey(s, ek[0])
+	s = maskAddRoundKey(s, ek[0], X2)
 
 	state = [	s[0], s[4], s[8], s[12],
 				s[1], s[5], s[9], s[13],
@@ -725,7 +687,7 @@ def main():
 
 	ciphredText = AES(input, s_box)
 
-	#print(ciphredText)
+	print(ciphredText)
 
 	#clearText = dAES(ciphredText, s_box)
 
