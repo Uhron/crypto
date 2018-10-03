@@ -1,3 +1,4 @@
+
 class Aritmetic:
 	""" modular aritmetic
 	functions: reduct, mult, div, gcd.
@@ -66,7 +67,10 @@ class Aritmetic:
 			return 0, a
 
 		if N == None:
-			N = a
+			N = max([a,b])
+
+		if a < b:
+			a, b = b, a
 
 		a_p = a
 		b_p = b
@@ -114,7 +118,7 @@ def main():
 
 	ar = Aritmetic()
 
-	print(ar.gcd(76,19))
+	print(ar.gcd((11 - 1)*(23 - 1),3))
 
 
 
