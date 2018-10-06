@@ -1,3 +1,4 @@
+
 ##############		ARITMETIC		##############
 
 class Aritmetic:
@@ -7,6 +8,7 @@ class Aritmetic:
 
 	def __init__(self):
 		""" init function
+
 		no returns
 		"""
 
@@ -121,7 +123,9 @@ class RSA:
 
 	def __init__(self, p = 23, q = 11):
 		""" init function, parameters 2 prime numbers and coprimers between each other
+
 		by default q = 11 and p = 23
+
 		no returns
 		"""
 
@@ -134,6 +138,7 @@ class RSA:
 		"""Generate N = p*q and compute fi(N) = (p - 1)*(q - 1)
 		e = 3 such that 1 < e < fi(N) and gcd(e, fi(N)) = 1
 		determine d -->> e^-1 mod fi(N)
+
 		return e, d, N, fi(N)
 		"""
 
@@ -150,9 +155,12 @@ class RSA:
 
 	def SFM(self):
 		"""RSA involves a public key and a private key
+
 		Straight Forward Method implemention
+
 		e, N are released as the public key
 		d is kept as the private key exponent
+
 		return 0
 		"""
 
@@ -179,9 +187,12 @@ class RSA:
 
 	def op_crt(self, m, d, N):
 		"""Chinese Remaider Theorem implemention
+
 		It only can be done in private cases cause works with
 		private key, p and q (private parameters).
+
 		To encipher you (in real life theoretically) don't know the privates parameters
+
 		return desciphered or signed m
 		"""
 
@@ -208,9 +219,12 @@ class RSA:
 
 	def CRT(self):
 		"""RSA involves a public key and a private key
+
 		Chinese Remaider Theorem implemention
+
 		e, N are released as the public key
 		d is kept as the private key exponent
+
 		return 0
 		"""
 
@@ -281,6 +295,7 @@ split_string = lambda x, n: [x[i:i+n] for i in range(0, len(x), n)]
 def split_string_0(x, n):
 	""" split string in substring of n characters if it starts with 1,
 	if starts with 0 give a substring with only a zero
+
 	return aray with substrins
 	"""
 
@@ -305,6 +320,7 @@ def split_string_0(x, n):
 def L2R(n, e, m):
 	""" exponentation with square and multiply method
 	implementation left to rigth
+
 	returns result of exonentation
 	"""
 
@@ -326,6 +342,7 @@ def L2R(n, e, m):
 def R2L(n, e, m):
 	""" exponentation with square and multiply method
 	implementation rigth to left
+
 	returns result of exonentation
 	"""
 
@@ -347,7 +364,9 @@ def R2L(n, e, m):
 def Ladder_M(n, e, m):
 	"""exponentaion like square and multiply method 
 	but with atomic operations.
+
 	Montgomery's Ladder Technique
+
 	returns result of exponentation
 	"""
 
@@ -374,8 +393,11 @@ def Ladder_M(n, e, m):
 def K_ary(n, e, m, b = 2, k = 3):
 	"""exponentation with K-ary method
 	by default with binary base -->> b = 2
+
 	value k any integer greater o requal than 1 -->> k = 2,3,4... (whatever)
+
 	by default k = 3
+
 	returns result of exponentaion
 	"""
 
@@ -418,8 +440,11 @@ def K_ary(n, e, m, b = 2, k = 3):
 def slidig_W(n, e, m, b = 2, k = 3):
 	"""exponentation with sliding windows method
 	by default with binary base -->> b = 2
+
 	value k any integer greater o requal than 1 -->> k = 2,3,4... (whatever)
+
 	by default k = 3
+
 	returns result of exponentaion
 	"""
 
@@ -460,7 +485,9 @@ def slidig_W(n, e, m, b = 2, k = 3):
 
 def MP(a, b, n, r):
 	"""montgomery's product
+
 	Calculate n' so that r*r^-1 - n*n' = 1
+
 	returns a*b*r^1 mod m
 	"""
 
@@ -493,6 +520,7 @@ def MP(a, b, n, r):
 def ME(n, e, m, b = 2):
 	"""exponentation with montgomery's exponentation
 	by default with binary base -->> b = 2
+
 	returns result of exponentaion
 	"""
 
@@ -526,6 +554,7 @@ def ME(n, e, m, b = 2):
 
 def main():
 	"""call at all functions to test it
+
 	returns nothing
 	"""
 
@@ -577,4 +606,4 @@ def main():
 
 
 if __name__ == "__main__":
-main()
+	main()
