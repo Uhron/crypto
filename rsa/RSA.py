@@ -1,4 +1,3 @@
-
 ##############		ARITMETIC		##############
 
 class Aritmetic:
@@ -8,7 +7,6 @@ class Aritmetic:
 
 	def __init__(self):
 		""" init function
-
 		no returns
 		"""
 
@@ -106,7 +104,7 @@ class Aritmetic:
 				t = self.mult(x, Pi[1], N)
 				Pi = [Pi[1], self.reduct(t + Pi[0], N)]
 
-			return self.reduct(((-1)**count)*Qi[0], N), a_p
+			return self.reduct(((-1)**count)*Qi[0], N), self.reduct(((-1)**(count))*Pi[0], N), a_p
 
 		else:
 			return 0, 0, a_p
@@ -123,9 +121,7 @@ class RSA:
 
 	def __init__(self, p = 23, q = 11):
 		""" init function, parameters 2 prime numbers and coprimers between each other
-
 		by default q = 11 and p = 23
-
 		no returns
 		"""
 
@@ -138,7 +134,6 @@ class RSA:
 		"""Generate N = p*q and compute fi(N) = (p - 1)*(q - 1)
 		e = 3 such that 1 < e < fi(N) and gcd(e, fi(N)) = 1
 		determine d -->> e^-1 mod fi(N)
-
 		return e, d, N, fi(N)
 		"""
 
@@ -155,12 +150,9 @@ class RSA:
 
 	def SFM(self):
 		"""RSA involves a public key and a private key
-
 		Straight Forward Method implemention
-
 		e, N are released as the public key
 		d is kept as the private key exponent
-
 		return 0
 		"""
 
@@ -187,12 +179,9 @@ class RSA:
 
 	def op_crt(self, m, d, N):
 		"""Chinese Remaider Theorem implemention
-
 		It only can be done in private cases cause works with
 		private key, p and q (private parameters).
-
 		To encipher you (in real life theoretically) don't know the privates parameters
-
 		return desciphered or signed m
 		"""
 
@@ -219,12 +208,9 @@ class RSA:
 
 	def CRT(self):
 		"""RSA involves a public key and a private key
-
 		Chinese Remaider Theorem implemention
-
 		e, N are released as the public key
 		d is kept as the private key exponent
-
 		return 0
 		"""
 
@@ -275,10 +261,50 @@ def fill(p, fill):
 	return p
 
 
+def concatenate_list_data(list):
+	""" concatenate list data, concatenate all data in a list into one string
+	Returns string of concatenated data
+	"""
+	result = ''
+
+	for element in list:
+
+		result += str(element)
+
+	return result
+
+
+#split string in substrings of n characters no matters what
+split_string = lambda x, n: [x[i:i+n] for i in range(0, len(x), n)]
+
+
+def split_string_0(x, n):
+	""" split string in substring of n characters if it starts with 1,
+	if starts with 0 give a substring with only a zero
+	return aray with substrins
+	"""
+
+	res = []
+	i, pos = 0, 0
+
+	while pos < len(x):
+
+		if x[pos] != '0':
+			i = pos
+			pos += (n - 1)
+
+		else:
+			i = pos
+
+		res.append(x[i:pos + 1])
+		pos += 1
+
+	return res
+
+
 def L2R(n, e, m):
 	""" exponentation with square and multiply method
 	implementation left to rigth
-
 	returns result of exonentation
 	"""
 
@@ -300,7 +326,6 @@ def L2R(n, e, m):
 def R2L(n, e, m):
 	""" exponentation with square and multiply method
 	implementation rigth to left
-
 	returns result of exonentation
 	"""
 
@@ -322,9 +347,7 @@ def R2L(n, e, m):
 def Ladder_M(n, e, m):
 	"""exponentaion like square and multiply method 
 	but with atomic operations.
-
 	Montgomery's Ladder Technique
-
 	returns result of exponentation
 	"""
 
@@ -351,59 +374,158 @@ def Ladder_M(n, e, m):
 def K_ary(n, e, m, b = 2, k = 3):
 	"""exponentation with K-ary method
 	by default with binary base -->> b = 2
-
-	value k any integer greater than 1 -->> k = 2,3,4... (whatever)
-
+	value k any integer greater o requal than 1 -->> k = 2,3,4... (whatever)
 	by default k = 3
-
 	returns result of exponentaion
 	"""
+
+	#precomputation
+	e = bin(e)[2:]
+
+	while len(e)%k != 0:
+		e = fill(e, len(e) + 1)
+
+	e = concatenate_list_data(list(reversed(e)))
+
+	e = split_string(e, k)
+
+	e = list(reversed(e))
+
+	for i in range(len(e)):
+		e[i] = concatenate_list_data(list(reversed(e[i])))
 
 	j = b**k
 
-	g = []
+	g = {}
 
-	for i in range(j):
-		g.append(fill(bin(i)[2:], k))
+	g[fill(bin(0)[2:], k)] = 0
 
-	print(g)
+	for i in range(1, j):
+		g[fill(bin(i)[2:], k)] = ar.reduct(n**i, m)
 
-	return 0
+	#begin the algorithm
+	A = g[e[0]]
+
+	for i in range(1, len(e)):
+
+		A = ar.mult(ar.reduct(A**j, m), g[fill(e[i], k)], m)
+
+	print("K_ary -->> " + str(A))
+
+	return A
 
 
-def slidig_W(n, e, b = 2):
+def slidig_W(n, e, m, b = 2, k = 3):
 	"""exponentation with sliding windows method
 	by default with binary base -->> b = 2
-
+	value k any integer greater o requal than 1 -->> k = 2,3,4... (whatever)
+	by default k = 3
 	returns result of exponentaion
 	"""
 
-	return 0
+	#precomputation
+	e = concatenate_list_data(list(reversed(bin(e)[2:])))
+
+	e = split_string_0(e, k)
+
+	e = list(reversed(e))
+
+	for i in range(len(e)):
+		e[i] = concatenate_list_data(list(reversed(e[i])))
+
+	j = b**k
+
+	g = {}
+
+	g[fill(bin(0)[2:], k)] = 0
+
+	for i in range(1, j):
+		g[fill(bin(i)[2:], k)] = ar.reduct(n**i, m)
+
+	#begin the algorithm
+	A = g[fill(e[0], k)]
+
+	for i in range(1, len(e)):
+
+		if e[i] == '0':
+			A = ar.mult(A, A, m)
+
+		else:
+			A = ar.mult(A**j, g[fill(e[i], k)], m)
+
+	print("sliding window -->> " + str(A))
+
+	return A
 
 
-def MP(a, b):
+def MP(a, b, n, r):
 	"""montgomery's product
-
-	returns result of the product
+	Calculate n' so that r*r^-1 - n*n' = 1
+	returns a*b*r^1 mod m
 	"""
 
-	return 0
+	#r = 2
+
+	#while r <= n:
+	#	r = r << 1
+
+	n_p, r_inv = ar.gcd(n, r, n)[:2]
+
+	print(r_inv)
+
+	n_p = -n_p
+
+	t = a * b
+
+	m = t * n_p % r
+
+	u = (t + m * n) / r
+
+	while u > n:
+		u = u - n
+
+	print("expected res -->> " + str((a * b * -r_inv) % n))
+	print("MP -->> " + str(u))
+
+	return u
 
 
-def ME(n, e, b = 2):
+def ME(n, e, m, b = 2):
 	"""exponentation with montgomery's exponentation
 	by default with binary base -->> b = 2
-
 	returns result of exponentaion
 	"""
 
-	return 0
+	e = bin(e)[2:]
+
+	r = 2
+
+	while r <= m:
+		r = r << 1
+
+	x = MP(n, r**2, m, r)
+
+	A = MP(1, r**2, m, r)
+
+	for b in e:
+
+		A = MP(A, A, r, r)
+
+		if b == '1':
+			A = MP(A, n, r, r)
+
+	A = MP(A, 1, m, r)
+
+	print("ME -->> " + str(A))
+
+	return A
+
 
 ###########		EXPONENTATION METHODS	##########
 
+
 def main():
 	"""call at all functions to test it
-
 	returns nothing
 	"""
 
@@ -435,6 +557,24 @@ def main():
 	print("expected res -->> " + str(pow(34, 11, 29)))
 	print("\nK-ary end ------------\n\n")
 
+	print("Sliding window implementation: values -->> 54^17 mod 19; k = 3 and b = 2 (binary)\n")
+	slidig_W(54, 17, 19)
+	print("expected res -->> " + str(pow(54, 17, 19)))
+	print("\nK-ary end ------------\n\n")
+
+	print("Montgomery product: values -->> 38 * 67 mod 71\n")
+	r = 2
+	m = 70
+	while r <= m:
+		r = r << 1
+	MP(38, 67, 71, r)
+	print("\nK-ary end ------------\n\n")
+
+	print("Montgomery exponentation: values -->> 73^7 mod 31\n")
+	ME(73, 7, 31)
+	print("expected res -->> " + str(pow(73, 7, 31)))
+	print("\nK-ary end ------------\n\n")
+
 
 if __name__ == "__main__":
-	main()
+main()
