@@ -97,16 +97,16 @@ class Aritmetic:
 
 		if a_p == 1:
 
-			Pi = [1,0]
-			Qi = [0,1]
+			Qi = [1,0]
+			Pi = [0,1]
 
 			for x in qi:
-				t = self.mult(x, Qi[1], N)
-				Qi = [Qi[1], self.reduct(t + Qi[0], N)]
-				t = self.mult(x, Pi[1], N)
-				Pi = [Pi[1], self.reduct(t + Pi[0], N)]
+				t = x * Qi[1]
+				Qi = [Qi[1], t + Qi[0]]
+				t = x * Pi[1]
+				Pi = [Pi[1], t + Pi[0]]
 
-			return self.reduct(((-1)**count)*Qi[0], N), self.reduct(((-1)**(count))*Pi[0], N), a_p
+			return (((-1)**(count))*Pi[0]), (((-1)**(count+1))*Qi[0]), a_p
 
 		else:
 			return 0, 0, a_p
@@ -148,7 +148,7 @@ class RSA:
 
 		fi_N = (self.p - 1)*(self.q - 1)
 
-		d = ar.gcd((self.p - 1)*(self.q - 1), 3)[0]
+		d = ar.reduct(ar.gcd((self.p - 1)*(self.q - 1), 3)[0], fi_N)
 
 		return e, d , N, fi_N
 
@@ -496,9 +496,15 @@ def MP(a, b, n, r):
 	#while r <= n:
 	#	r = r << 1
 
-	n_p, r_inv = ar.gcd(n, r, n)[:2]
+	#compute a and b in Montgomerys' space
+	a = ar.mult(a,r,n)
+	b = ar.mult(b,r,n)
 
-	print(r_inv)
+	#print("r -->> " + str(r) + "; n -->> " + str(n))
+
+	n_p, r_inv = ar.gcd(r, n, n)[:2]
+
+	#print("r_inv -->> " + str(r_inv) + "; n_p -->> " + str(n_p))
 
 	n_p = -n_p
 
@@ -511,10 +517,12 @@ def MP(a, b, n, r):
 	while u > n:
 		u = u - n
 
-	print("expected res -->> " + str((a * b * -r_inv) % n))
-	print("MP -->> " + str(u))
+	u_real = ar.mult(u,r_inv,n)
+	#print("expected u -->> " + str(ar.mult(t,r_inv,n)))
+	#print("MP u (M.s' space)-->> " + str(u))
+	print("real space u -->> " + str(u_real))
 
-	return u
+	return u_real
 
 
 def ME(n, e, m, b = 2):
@@ -557,7 +565,7 @@ def main():
 
 	returns nothing
 	"""
-
+	
 	print("RSA_SFM implementation : \n")
 	rsa.SFM()
 	print("\nRSA_SFM end --------\n\n")
@@ -591,12 +599,13 @@ def main():
 	print("expected res -->> " + str(pow(54, 17, 19)))
 	print("\nK-ary end ------------\n\n")
 
-	print("Montgomery product: values -->> 38 * 67 mod 71\n")
-	r = 2
-	m = 70
-	while r <= m:
-		r = r << 1
-	MP(38, 67, 71, r)
+	print("Montgomery product: values -->> 43 * 59 mod 97\n")
+	#r = 2
+	#while r <= m:
+	#	r = r << 1
+	r = 100
+	MP(43, 56, 97, r)
+	print("expected res -->> " + str(pow((43*56), 1, 97)))
 	print("\nK-ary end ------------\n\n")
 
 	print("Montgomery exponentation: values -->> 73^7 mod 31\n")
