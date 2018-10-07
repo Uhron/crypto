@@ -326,15 +326,21 @@ def L2R(n, e, m):
 
 	e = bin(e)[2:]
 
+	count = 0
+
 	A = 1
 	for b in e:
 
 		A = ar.mult(A, A, m)
+		count += 1
 
 		if b == '1':
 			A = ar.mult(A, n, m)
+			count += 1
 
 	print("L2R -->> " + str(A))
+
+	print("operation ratio -->> " + str(count//len(e)))
 
 	return A
 
@@ -348,15 +354,21 @@ def R2L(n, e, m):
 
 	e = reversed(bin(e)[2:])
 
+	count = 0
+
 	A = 1
 	for b in e:
 
 		if b == '1':
 			A = ar.mult(A, n, m)
+			count += 1
 
 		n = ar.mult(n, n, m)
+		count += 1
 
 	print("R2L -->> " + str(A))
+
+	print("operation ratio -->> " + str(count//len(e)))
 
 	return A
 
@@ -386,6 +398,8 @@ def Ladder_M(n, e, m):
 			A = ar.mult(A, A, m)
 
 	print("Ladder M. -->> " + str(A))
+
+	print("operation ratio -->> " + str(2 * len(e)))
 
 	return A
 
@@ -434,6 +448,8 @@ def K_ary(n, e, m, b = 2, k = 3):
 
 	print("K_ary -->> " + str(A))
 
+	print("operation ratio -->> " + str(1 + j + (2 * len(e))))
+
 	return A
 
 
@@ -480,6 +496,8 @@ def slidig_W(n, e, m, b = 2, k = 3):
 
 	print("sliding window -->> " + str(A))
 
+	print("operation ratio -->> " + str(1 + (2**(k - 1)) + (2 * len(e))))
+
 	return A
 
 
@@ -521,6 +539,7 @@ def MP(a, b, n, r):
 	#print("expected u -->> " + str(ar.mult(t,r_inv,n)))
 	#print("MP u (M.s' space)-->> " + str(u))
 	print("real space u -->> " + str(u_real))
+	print("operation ratio -->> " + str(6))
 
 	return u_real
 
@@ -543,16 +562,23 @@ def ME(n, e, m, b = 2):
 
 	A = MP(1, r**2, m, r)
 
+	count = 0
+
 	for b in e:
 
 		A = MP(A, A, r, r)
 
+		count += 1
+
 		if b == '1':
 			A = MP(A, n, r, r)
+			count += 1
 
 	A = MP(A, 1, m, r)
 
 	print("ME -->> " + str(A))
+
+	print("operation ratio -->> " + str(18 + (6 * (count//len(e)))))
 
 	return A
 
