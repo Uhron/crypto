@@ -427,7 +427,7 @@ def K_ary(n, e, m, b = 2, k = 3):
 
 	print("K_ary -->> " + str(A))
 
-	print("operation ratio -->> " + str(1 + j + (2 * (len(e) - 1))))
+	print("operation ratio -->> " + str((k + 1)/k))
 
 	return A
 
@@ -472,7 +472,7 @@ def slidig_W(n, e, m, b = 2, k = 3):
 
 	print("sliding window -->> " + str(A))
 
-	print("operation ratio -->> " + str(1 + (2**(k - 1)) + (2 * (len(e) - 1))))
+	print("operation ratio -->> " + str((k + 2)/(k + 1)))
 
 	return A
 
