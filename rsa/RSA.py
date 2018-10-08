@@ -8,7 +8,6 @@ class Aritmetic:
 
 	def __init__(self):
 		""" init function
-
 		no returns
 		"""
 
@@ -123,9 +122,7 @@ class RSA:
 
 	def __init__(self, p = 23, q = 11):
 		""" init function, parameters 2 prime numbers and coprimers between each other
-
 		by default q = 11 and p = 23
-
 		no returns
 		"""
 
@@ -138,7 +135,6 @@ class RSA:
 		"""Generate N = p*q and compute fi(N) = (p - 1)*(q - 1)
 		e = 3 such that 1 < e < fi(N) and gcd(e, fi(N)) = 1
 		determine d -->> e^-1 mod fi(N)
-
 		return e, d, N, fi(N)
 		"""
 
@@ -155,12 +151,9 @@ class RSA:
 
 	def SFM(self):
 		"""RSA involves a public key and a private key
-
 		Straight Forward Method implemention
-
 		e, N are released as the public key
 		d is kept as the private key exponent
-
 		return 0
 		"""
 
@@ -187,12 +180,9 @@ class RSA:
 
 	def op_crt(self, m, d, N):
 		"""Chinese Remaider Theorem implemention
-
 		It only can be done in private cases cause works with
 		private key, p and q (private parameters).
-
 		To encipher you (in real life theoretically) don't know the privates parameters
-
 		return desciphered or signed m
 		"""
 
@@ -219,12 +209,9 @@ class RSA:
 
 	def CRT(self):
 		"""RSA involves a public key and a private key
-
 		Chinese Remaider Theorem implemention
-
 		e, N are released as the public key
 		d is kept as the private key exponent
-
 		return 0
 		"""
 
@@ -295,7 +282,6 @@ split_string = lambda x, n: [x[i:i+n] for i in range(0, len(x), n)]
 def split_string_0(x, n):
 	""" split string in substring of n characters if it starts with 1,
 	if starts with 0 give a substring with only a zero
-
 	return aray with substrins
 	"""
 
@@ -320,7 +306,6 @@ def split_string_0(x, n):
 def L2R(n, e, m):
 	""" exponentation with square and multiply method
 	implementation left to rigth
-
 	returns result of exonentation
 	"""
 
@@ -340,7 +325,7 @@ def L2R(n, e, m):
 
 	print("L2R -->> " + str(A))
 
-	print("operation ratio -->> " + str(count//len(e)))
+	print("operation ratio -->> " + str(count/len(e)))
 
 	return A
 
@@ -348,16 +333,15 @@ def L2R(n, e, m):
 def R2L(n, e, m):
 	""" exponentation with square and multiply method
 	implementation rigth to left
-
 	returns result of exonentation
 	"""
 
-	e = reversed(bin(e)[2:])
+	re = reversed(bin(e)[2:])
 
 	count = 0
 
 	A = 1
-	for b in e:
+	for b in re:
 
 		if b == '1':
 			A = ar.mult(A, n, m)
@@ -368,7 +352,7 @@ def R2L(n, e, m):
 
 	print("R2L -->> " + str(A))
 
-	print("operation ratio -->> " + str(count//len(e)))
+	print("operation ratio -->> " + str(count/len(bin(e)[2:])))
 
 	return A
 
@@ -376,9 +360,7 @@ def R2L(n, e, m):
 def Ladder_M(n, e, m):
 	"""exponentaion like square and multiply method 
 	but with atomic operations.
-
 	Montgomery's Ladder Technique
-
 	returns result of exponentation
 	"""
 
@@ -399,7 +381,7 @@ def Ladder_M(n, e, m):
 
 	print("Ladder M. -->> " + str(A))
 
-	print("operation ratio -->> " + str(2 * len(e)))
+	print("operation ratio -->> " + str(1 + 2 * len(e)))
 
 	return A
 
@@ -407,11 +389,8 @@ def Ladder_M(n, e, m):
 def K_ary(n, e, m, b = 2, k = 3):
 	"""exponentation with K-ary method
 	by default with binary base -->> b = 2
-
 	value k any integer greater o requal than 1 -->> k = 2,3,4... (whatever)
-
 	by default k = 3
-
 	returns result of exponentaion
 	"""
 
@@ -448,7 +427,7 @@ def K_ary(n, e, m, b = 2, k = 3):
 
 	print("K_ary -->> " + str(A))
 
-	print("operation ratio -->> " + str(1 + j + (2 * len(e))))
+	print("operation ratio -->> " + str(1 + j + (2 * (len(e) - 1))))
 
 	return A
 
@@ -456,11 +435,8 @@ def K_ary(n, e, m, b = 2, k = 3):
 def slidig_W(n, e, m, b = 2, k = 3):
 	"""exponentation with sliding windows method
 	by default with binary base -->> b = 2
-
 	value k any integer greater o requal than 1 -->> k = 2,3,4... (whatever)
-
 	by default k = 3
-
 	returns result of exponentaion
 	"""
 
@@ -496,23 +472,21 @@ def slidig_W(n, e, m, b = 2, k = 3):
 
 	print("sliding window -->> " + str(A))
 
-	print("operation ratio -->> " + str(1 + (2**(k - 1)) + (2 * len(e))))
+	print("operation ratio -->> " + str(1 + (2**(k - 1)) + (2 * (len(e) - 1))))
 
 	return A
 
 
-def MP(a, b, n, r):
+def MP(a, b, n, r = 100):
 	"""montgomery's product
-
 	Calculate n' so that r*r^-1 - n*n' = 1
-
 	returns a*b*r^1 mod m
 	"""
 
-	#r = 2
+	r = 2
 
-	#while r <= n:
-	#	r = r << 1
+	while r <= n:
+		r = r << 1
 
 	#compute a and b in Montgomerys' space
 	a = ar.mult(a,r,n)
@@ -544,10 +518,37 @@ def MP(a, b, n, r):
 	return u_real
 
 
+def mp(a, b, n):
+	"""montgomery's product
+	same as above but returning u in mongomerys' space to make mongomry exponentation
+	"""
+
+	#compute a and b in Montgomerys' space
+
+	r = 2
+
+	while r <= n:
+		r = r << 1
+
+	n_p, r_inv = ar.gcd(r, n, n)[:2]
+
+	n_p = -n_p
+
+	t = a * b
+
+	m = t * n_p % r
+
+	u = (t + m * n) / r
+
+	while u > n:
+		u = u - n
+
+	return u
+
+
 def ME(n, e, m, b = 2):
 	"""exponentation with montgomery's exponentation
 	by default with binary base -->> b = 2
-
 	returns result of exponentaion
 	"""
 
@@ -558,27 +559,26 @@ def ME(n, e, m, b = 2):
 	while r <= m:
 		r = r << 1
 
-	x = MP(n, r**2, m, r)
+	x = mp(n, r**2, m)
 
-	A = MP(1, r**2, m, r)
+	A = mp(1, r**2, m)
 
 	count = 0
 
 	for b in e:
 
-		A = MP(A, A, r, r)
-
+		A = ar.reduct(mp(A, A, m), r)
 		count += 1
 
 		if b == '1':
-			A = MP(A, n, r, r)
+			A = ar.reduct(mp(A, x, m), r)
 			count += 1
 
-	A = MP(A, 1, m, r)
+	A = mp(A, 1, m)
 
 	print("ME -->> " + str(A))
 
-	print("operation ratio -->> " + str(18 + (6 * (count//len(e)))))
+	print("operation ratio -->> " + str(18 + (6 * (count/len(e)))))
 
 	return A
 
@@ -588,7 +588,6 @@ def ME(n, e, m, b = 2):
 
 def main():
 	"""call at all functions to test it
-
 	returns nothing
 	"""
 	
@@ -626,18 +625,14 @@ def main():
 	print("\nK-ary end ------------\n\n")
 
 	print("Montgomery product: values -->> 43 * 59 mod 97\n")
-	#r = 2
-	#while r <= m:
-	#	r = r << 1
-	r = 100
-	MP(43, 56, 97, r)
+	MP(43, 56, 97)
 	print("expected res -->> " + str(pow((43*56), 1, 97)))
-	print("\nK-ary end ------------\n\n")
+	print("\nMontgomery product end ------------\n\n")
 
 	print("Montgomery exponentation: values -->> 73^7 mod 31\n")
 	ME(73, 7, 31)
 	print("expected res -->> " + str(pow(73, 7, 31)))
-	print("\nK-ary end ------------\n\n")
+	print("\nMontgomery exponentation end ------------\n\n")
 
 
 if __name__ == "__main__":
